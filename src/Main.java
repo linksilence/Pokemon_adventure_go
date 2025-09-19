@@ -1,15 +1,53 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        treinador ash = new treinador("Ash Ketchum");
+        treinador gary = new treinador("Gary Carvalho");
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        pokemon charmander = new pokemon("Charmander", tipoPoekmon.FOGO, 100, ash);
+        pokemon bulbasaur = new pokemon("Bulbasaur", tipoPoekmon.GRAMA, 100, gary);
+
+        habilidade brasa = new habilidade("Brasa", 40, tipoPoekmon.FOGO, charmander);
+        habilidade folhaNavalha = new habilidade("Folha Navalha", 55, tipoPoekmon.GRAMA, bulbasaur);
+
+        itemCura pocao = new itemCura("Poção", "Restaura 20 de vida", 20);
+
+        batalha primeiraBatalha = new batalha(ash, gary);
+        primeiraBatalha.iniciar();
+
+        System.out.println("\n" + ash.getNome() + " envia " + charmander.getnome() + "!");
+        System.out.println(gary.getNome() + " envia " + bulbasaur.getnome() + "!\n");
+
+        int turno = 1;
+        while (charmander.getVida() > 0 && bulbasaur.getVida() > 0) {
+            primeiraBatalha.registrarTurno(turno);
+
+            charmander.setAtaque(bulbasaur, brasa);
+
+            if (bulbasaur.getVida() <= 0) {
+                break;
+            }
+
+            System.out.println("---");
+
+            bulbasaur.setAtaque(charmander, folhaNavalha);
+
+            if (bulbasaur.getVida() <= 40) {
+                System.out.println(gary.getNome() + " usa uma " + pocao.getNome() + " em " + bulbasaur.getnome() + "!");
+                pocao.aplicar(bulbasaur);
+            }
+
+            System.out.println("\n------------------------------\n");
+            turno++;
         }
+
+        if (charmander.getVida() <= 0) {
+            System.out.println(charmander.getnome() + " foi derrotado!");
+            System.out.println("O vencedor é: " + gary.getNome() + "!");
+        } else {
+            System.out.println(bulbasaur.getnome() + " foi derrotado!");
+            System.out.println("O vencedor é: " + ash.getNome() + "!");
+        }
+
+        primeiraBatalha.vitoria();
     }
 }
